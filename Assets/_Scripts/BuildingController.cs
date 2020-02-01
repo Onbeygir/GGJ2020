@@ -4,11 +4,24 @@ using UnityEngine;
 
 public class BuildingController : MonoBehaviour
 {
+    public static BuildingController Instance
+    {
+        get
+        {
+            if (Instance == null)
+            {
+                _instance = FindObjectOfType<BuildingController>();
+            }
+            return _instance;
+        }
+    }
+    private static BuildingController _instance;
     public SpriteRenderer BuildingSpriteRenderer;
     public SpriteRenderer BuildingGrid;
 
     [Multiline]
     public string BuildingData;
+    public float MaxPlacementDistance;
     public int PixelUnit = 100;
     public int BoxPixelWidth = 9;
 
@@ -24,6 +37,7 @@ public class BuildingController : MonoBehaviour
 
     public void Awake()
     {
+        _instance = this;
         if (BuildingData != null && BuildingData.Length != 0)
         {
             var pos = GridParent.transform.position;
@@ -60,7 +74,7 @@ public class BuildingController : MonoBehaviour
                 _grid[j][i] = new GridSlot()
                 {
                     Pos = new Vector2(GridParent.transform.localPosition.x + i * distanceBetween, GridParent.transform.localPosition.y + j * distanceBetween),
-                    Value = int.Parse(lines[j][i].ToString())
+                    Value = int.Parse(lines[lines.Length - 1 - j][i].ToString())
                 };
                 GameObject go = new GameObject();
                 go.transform.SetParent(GridParent.transform);
@@ -70,5 +84,10 @@ public class BuildingController : MonoBehaviour
         }
 
         GridParent.transform.localPosition = Vector3.zero;
+    }
+
+    public void TryPlacingPiece(RepairPiece piece)
+    {
+
     }
 }
