@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1535863917}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: GridParent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -117,6 +117,7 @@ MonoBehaviour:
     200000002
 
     222222222'
+  MaxPlacementDistance: 0
   PixelUnit: 100
   BoxPixelWidth: 9
   GridParent: {fileID: 1535863916}
@@ -131,7 +132,7 @@ GameObject:
   - component: {fileID: 7011060863992785600}
   - component: {fileID: 7011060863992785601}
   m_Layer: 0
-  m_Name: monument01_silh
+  m_Name: Monument Grid Silhouette
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -189,9 +190,9 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 52201521
   m_SortingLayer: 2
-  m_SortingOrder: 0
+  m_SortingOrder: 5
   m_Sprite: {fileID: 21300000, guid: 90a207b9148ad2447b87864dbdb474f8, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.12941177}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.43137255}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -212,7 +213,7 @@ GameObject:
   - component: {fileID: 7011060864877288667}
   - component: {fileID: 7011060864877288664}
   m_Layer: 0
-  m_Name: monument01
+  m_Name: Monument Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -272,7 +273,7 @@ SpriteRenderer:
   m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 3ad617081386fd646bc969c4027fc7a6, type: 3}
-  m_Color: {r: 0.047169805, g: 0.047169805, b: 0.047169805, a: 1}
+  m_Color: {r: 0.047169805, g: 0.047169805, b: 0.047169805, a: 0.5254902}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
