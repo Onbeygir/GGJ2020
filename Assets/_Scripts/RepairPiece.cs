@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using DG.Tweening;
 
 public class RepairPiece : MonoBehaviour
 {
@@ -17,16 +18,20 @@ public class RepairPiece : MonoBehaviour
     [SerializeField] protected bool _locked;
     [SerializeField] protected DragStates _dragState;
 
+    public SO_PiecePattern PiecePattern;
 
-    public void Setup(GameObject boxPrefab, Vector2[] boxPositions, bool isArt = false ,int boxPixelSize = 9, int pixelUnit = 100)
+    private Vector3 _initialPos;
+
+    public void Setup(GameObject boxPrefab, SO_PiecePattern pattern, bool isArt = false ,int boxPixelSize = 9, int pixelUnit = 100)
     {
+        PiecePattern = pattern;
         if (isArt)
         {
             BoxPositions = new Vector2[] { Vector2.one};
         }
         else
         {
-            BoxPositions = boxPositions;
+            BoxPositions = PiecePattern.BoxPositions;
             
         }
 
@@ -39,23 +44,46 @@ public class RepairPiece : MonoBehaviour
             y *= (float)boxPixelSize / pixelUnit;
             box.transform.SetParent(transform);
             box.transform.localPosition = new Vector3(x, y, 0f);
-            
         }
 
-
+        _dragState = DragStates.NotDragging;
+        _initialPos = transform.position;
     }
 
     public void OnDragStarted(BaseEventData data)
     {
-        Debug.Log("DragStarted");
+        if (_locked) return;
+        //Debug.Log("DragStarted");
+        _dragState = DragStates.Dragging;
     }
     public void OnDragEnded(BaseEventData data)
     {
-        Debug.Log("DragEnded");
+        if (_dragState != DragStates.Dragging) return;
+
+        //Debug.Log("DragEnded");
+        _dragState = DragStates.WasDragging;
+        Vector2 snapPos;
+        if(BuildingController.Instance.TryPlacingPiece(this, out snapPos))
+        {
+            //success
+            _locked = true;
+            var tw = transform.DOMove(snapPos, .2f);
+            GameController.Instance.OnPiecePlacedCorrectly();
+        }
+        else
+        {
+            //return back
+            _locked = true;
+            var tw = transform.DOMove(_initialPos, 1f);
+            tw.SetEase(Ease.OutBack);
+            tw.onComplete += () => { _locked = false; };
+        }
     }
     public void OnDragging(BaseEventData data)
     {
-        Debug.Log("Dragging");
+        if (_dragState != DragStates.Dragging) return;
+
+        //Debug.Log("Dragging");
         Vector2 dragPos = Vector2.zero;
         dragPos = Camera.main.ScreenToWorldPoint(data.currentInputModule.input.mousePosition);
         transform.position = dragPos;

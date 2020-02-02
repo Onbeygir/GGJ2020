@@ -32,16 +32,17 @@ public class PieceFactory : MonoBehaviour
         _createdPieces[1].transform.position = RightPiecePosition.position;
         _createdPieces[2].transform.position = JokerPiecePosition.position;
 
-        _createdPieces[0].Setup(RepairBoxPrefab, GetRandomPatternPositions());
-        _createdPieces[1].Setup(RepairBoxPrefab, GetRandomPatternPositions());
+
+        _createdPieces[0].Setup(RepairBoxPrefab, GetRandomPattern());
+        _createdPieces[1].Setup(RepairBoxPrefab, GetRandomPattern());
 //        if(data != null && data.HasArtPiece)
-            _createdPieces[2].Setup(ArtBoxPrefab, GetRandomPatternPositions(),true);
+            _createdPieces[2].Setup(ArtBoxPrefab, GetRandomPattern(),true);
     }
 
-    private Vector2[] GetRandomPatternPositions()
+    private SO_PiecePattern GetRandomPattern()
     {
         int randomIndex = Random.Range(0, Patterns.Length);
-        return Patterns[randomIndex].BoxPositions;
+        return Patterns[randomIndex];
 
     }
 

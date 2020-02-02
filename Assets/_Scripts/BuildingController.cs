@@ -8,7 +8,7 @@ public class BuildingController : MonoBehaviour
     {
         get
         {
-            if (Instance == null)
+            if (_instance == null)
             {
                 _instance = FindObjectOfType<BuildingController>();
             }
@@ -86,8 +86,38 @@ public class BuildingController : MonoBehaviour
         GridParent.transform.localPosition = Vector3.zero;
     }
 
-    public void TryPlacingPiece(RepairPiece piece)
+    public bool TryPlacingPiece(RepairPiece piece, out Vector2 snapPos)
     {
-
+        //piece.PiecePattern.LeadPosition
+        float distance = float.PositiveInfinity;
+        Vector2 piecePos = piece.transform.position;
+        float tempDist;
+        int y = 0, x = 0;
+        for (int i = 0; i < _grid.Length; i++)
+        {
+            GridSlot[] item = (GridSlot[])_grid[i];
+            for (int j = 0; j < item.Length; j++)
+            {
+                GridSlot slot = (GridSlot)item[j];
+                tempDist = Vector2.Distance(slot.Pos, piecePos);
+                if(tempDist < distance)
+                {
+                    distance = tempDist;
+                    y = i;
+                    x = j;
+                }
+            }
+        }
+        GridSlot gs = _grid[y][x];
+        if (distance < MaxPlacementDistance && gs.Value == 0)
+        {
+            snapPos = gs.Pos;
+            return true;
+        }
+        else
+        {
+            snapPos = Vector2.zero;
+            return false;
+        }
     }
 }
