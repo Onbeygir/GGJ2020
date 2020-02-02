@@ -24,8 +24,11 @@ public class BuildingController : MonoBehaviour
     public float MaxPlacementDistance;
     public int PixelUnit = 100;
     public int BoxPixelWidth = 9;
-
+    
     public GameObject GridParent;
+
+    [SerializeField] private int _scoreAvailable = 0;
+    public int ScoreAvailable { get { return _scoreAvailable; } }
 
     private GridSlot[][] _grid;
 
@@ -76,10 +79,11 @@ public class BuildingController : MonoBehaviour
                     Pos = new Vector2(GridParent.transform.position.x + (i- halfX) * distanceBetween, GridParent.transform.position.y + (j-.5f) * distanceBetween),
                     Value = int.Parse(lines[lines.Length - 1 - j][i].ToString())
                 };
+                if (_grid[j][i].Value == 0) _scoreAvailable++;
                 GameObject go = new GameObject();
                 go.transform.SetParent(GridParent.transform);
                 go.transform.position = _grid[j][i].Pos;
-                go.name = _grid[j][i].Value.ToString();
+                go.name = "Grid:" + j + ":" + i; 
             }
         }
 
@@ -110,13 +114,6 @@ public class BuildingController : MonoBehaviour
             }
         }
         GridSlot gs = _grid[y][x];
-        GameObject ng1 = new GameObject();
-        ng1.transform.position = piece.LeadingBox.position;
-        ng1.name = "piece.LeadingBox.position";
-
-        GameObject ng2 = new GameObject();
-        ng2.transform.position = gs.Pos;
-        ng2.name = "gs.Pos";
 
         bool inSlot = false;
         
@@ -131,15 +128,15 @@ public class BuildingController : MonoBehaviour
             inSlot = false;
             return false;
         }
-        Vector2Int coord = new Vector2Int(y, x);
+        Vector2Int coord = new Vector2Int(x, y);
         List<Vector2Int> sum = new List<Vector2Int>();
         //sum my bitch up DUUUUU du du duuu dududu
         foreach (Vector2 boxPos in piece.PiecePattern.BoxPositions)
         {
-            Vector2 p = piece.PiecePattern.PositionalDifference(boxPos);
-            p = new Vector2(p.y, p.x);
-            p = coord + p;
-            int value = _grid[(int)p.y][(int)p.x].Value;
+            Vector2 diff = piece.PiecePattern.PositionalDifference(boxPos);
+            diff = coord - diff;
+            int value = _grid[(int)diff.y][(int)diff.x].Value;
+
             //Debug.Log(value);
             if (value > 0)
             {
@@ -148,17 +145,16 @@ public class BuildingController : MonoBehaviour
             }
             else
             {
-                sum.Add(new Vector2Int((int)p.x, (int)p.y));
+                sum.Add(new Vector2Int((int)diff.y, (int)diff.x));
             }
         }
         bool grounded = false;
         foreach (var boxPos in piece.PiecePattern.BoxPositions)
         {
             Vector2 p = piece.PiecePattern.PositionalDifference(boxPos);
-            p = new Vector2(p.y, p.x);
             Vector2Int pInt = new Vector2Int((int)p.x, (int)p.y);
-            pInt = coord + pInt;
-            pInt.x += 1;
+            pInt = coord - pInt;
+            pInt.y -= 1;
             if (_grid[pInt.y][pInt.x].Value > 0)
                 grounded = true;
         }

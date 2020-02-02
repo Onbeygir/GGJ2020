@@ -22,14 +22,24 @@ public class GameController : MonoBehaviour
     private GameState _state;
     private static GameController _instance;
 
+    private int _currentScore = 0;
+    [SerializeField] private float _completePerc;
+
     private void Awake()
     {
         _instance = this;
     }
 
-    public void OnPiecePlacedCorrectly()
+    public void OnGameStarted()
     {
+        _currentScore = 0;
+    }
 
+    public void OnPiecePlacedCorrectly(RepairPiece piece)
+    {
+        _currentScore += piece.BoxPositions.Length;
+        _completePerc = (float)_currentScore / BuildingController.Instance.ScoreAvailable;
+        PieceFactory.Instance.OnPiecePlaced(piece);
     }
 
     public void GoBackToMainMenu()

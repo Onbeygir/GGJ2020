@@ -4,6 +4,15 @@ using UnityEngine;
 
 public class PieceFactory : MonoBehaviour
 {
+    public static PieceFactory Instance
+    {
+        get
+        {
+            if (_instance == null)
+                _instance = FindObjectOfType<PieceFactory>();
+            return _instance;
+        }
+    }
     public GameObject RepairPiecePrefab;
     public GameObject RepairBoxPrefab;
     public GameObject ArtBoxPrefab;
@@ -18,6 +27,7 @@ public class PieceFactory : MonoBehaviour
     public SO_PiecePattern[] Patterns;
 
     private RepairPiece[] _createdPieces = new RepairPiece[3]; //max 3
+    private static PieceFactory _instance;
 
     public void CreatePieces()
     {
@@ -38,8 +48,23 @@ public class PieceFactory : MonoBehaviour
 
         _createdPieces[0].Setup(RepairBoxPrefab, GetRandomPattern());
         _createdPieces[1].Setup(RepairBoxPrefab, GetRandomPattern());
-//        if(data != null && data.HasArtPiece)
-            _createdPieces[2].Setup(ArtBoxPrefab, ArtPattern, true);
+        //        if(data != null && data.HasArtPiece)
+        _createdPieces[2].Setup(ArtBoxPrefab, ArtPattern, true);
+    }
+
+    public void OnPiecePlaced(RepairPiece placedPiece)
+    {
+        for (int i = 0; i < _createdPieces.Length; i++)
+        {
+            RepairPiece item = _createdPieces[i];
+            if (item != placedPiece)
+            {
+                Destroy(item.gameObject);
+            }
+            _createdPieces[i] = null;
+        }
+
+        CreatePieces();
     }
 
     private SO_PiecePattern GetRandomPattern()

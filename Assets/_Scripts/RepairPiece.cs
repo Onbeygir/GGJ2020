@@ -74,7 +74,7 @@ public class RepairPiece : MonoBehaviour
             //success
             _locked = true;
             var tw = transform.DOMove(snapPos, .2f);
-            GameController.Instance.OnPiecePlacedCorrectly();
+            GameController.Instance.OnPiecePlacedCorrectly(this);
         }
         else
         {

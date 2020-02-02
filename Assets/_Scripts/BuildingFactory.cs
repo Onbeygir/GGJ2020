@@ -28,7 +28,7 @@ public class BuildingFactory : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.A))
         {
             Destroy(_currentBuilding.gameObject);
-            _currentIndex = (_currentIndex+1) % (BuildingPrefabs.Length-1);
+            _currentIndex = (_currentIndex+1) % (BuildingPrefabs.Length);
             _currentBuilding = Instantiate(BuildingPrefabs[_currentIndex]);
         }
     }
