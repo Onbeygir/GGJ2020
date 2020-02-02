@@ -7,6 +7,47 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 519759022539051802, guid: bf34094e3692947459ac259a7e72d3e0,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 4b6818df6331d5b43ac1e37cae8b81b9,
+        type: 3}
+    - target: {fileID: 7011060863870459204, guid: bf34094e3692947459ac259a7e72d3e0,
+        type: 3}
+      propertyPath: BuildingData
+      value: '222222222222222
+
+        222222202222222
+
+        222222000222222
+
+        222220000022222
+
+        222200000002222
+
+        222000000000222
+
+        222000000000222
+
+        220000000000022
+
+        220000000000022
+
+        220000000000022
+
+        200000000000002
+
+        200000000000002
+
+        200000000000002
+
+        200000000000002
+
+        200000000000002
+
+        222222222222222'
+      objectReference: {fileID: 0}
     - target: {fileID: 7011060863870459205, guid: bf34094e3692947459ac259a7e72d3e0,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -67,6 +108,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: Level07
       objectReference: {fileID: 0}
+    - target: {fileID: 7011060863992785601, guid: bf34094e3692947459ac259a7e72d3e0,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: c1280dbcb86ed614cbd97a96e41151bf,
+        type: 3}
     - target: {fileID: 7011060864877288664, guid: bf34094e3692947459ac259a7e72d3e0,
         type: 3}
       propertyPath: m_Sprite

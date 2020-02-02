@@ -160,23 +160,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BuildingSpriteRenderer: {fileID: 7011060864877288664}
   BuildingGrid: {fileID: 7011060863992785601}
-  BuildingData: '2222222222
+  BuildingData: '22222222222
 
-    2222220022
+    22222220222
 
-    2222220022
+    22222220022
 
-    2220020022
+    22200020022
 
-    2200000022
+    22000000022
 
-    2000000022
+    20000000022
 
-    2000000022
+    20000000022
 
-    2000000002
+    20000000022
 
-    2222222222'
+    20000000002
+
+    22222222222'
   MaxPlacementDistance: 0.75
   PixelUnit: 100
   BoxPixelWidth: 9
