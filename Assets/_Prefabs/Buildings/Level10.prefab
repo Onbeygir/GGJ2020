@@ -13,6 +13,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 21300000, guid: f6c1aefd15a00d643ababaa50589c58c,
         type: 3}
+    - target: {fileID: 6190291007915927114, guid: bf34094e3692947459ac259a7e72d3e0,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.04
+      objectReference: {fileID: 0}
     - target: {fileID: 7011060863870459204, guid: bf34094e3692947459ac259a7e72d3e0,
         type: 3}
       propertyPath: BuildingData
@@ -118,6 +123,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Level10
       objectReference: {fileID: 0}
+    - target: {fileID: 7011060863992785600, guid: bf34094e3692947459ac259a7e72d3e0,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.04
+      objectReference: {fileID: 0}
     - target: {fileID: 7011060863992785601, guid: bf34094e3692947459ac259a7e72d3e0,
         type: 3}
       propertyPath: m_Sprite
@@ -130,5 +140,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 21300000, guid: e1a6d6b5bba4d1b43a777b288500b2e5,
         type: 3}
+    - target: {fileID: 7011060864877288667, guid: bf34094e3692947459ac259a7e72d3e0,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.04
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bf34094e3692947459ac259a7e72d3e0, type: 3}
