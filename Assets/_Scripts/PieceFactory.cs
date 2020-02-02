@@ -8,6 +8,9 @@ public class PieceFactory : MonoBehaviour
     public GameObject RepairBoxPrefab;
     public GameObject ArtBoxPrefab;
 
+    public SO_PiecePattern ArtPattern;
+
+
     public Transform LeftPiecePosition;
     public Transform RightPiecePosition;
     public Transform JokerPiecePosition;
@@ -36,7 +39,7 @@ public class PieceFactory : MonoBehaviour
         _createdPieces[0].Setup(RepairBoxPrefab, GetRandomPattern());
         _createdPieces[1].Setup(RepairBoxPrefab, GetRandomPattern());
 //        if(data != null && data.HasArtPiece)
-            _createdPieces[2].Setup(ArtBoxPrefab, GetRandomPattern(),true);
+            _createdPieces[2].Setup(ArtBoxPrefab, ArtPattern, true);
     }
 
     private SO_PiecePattern GetRandomPattern()

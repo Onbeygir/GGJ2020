@@ -9,4 +9,13 @@ public class SO_PiecePattern : ScriptableObject
     public Vector2[] BoxPositions;
 
     public Vector2 LeadPosition;
+
+    public Vector2 PositionalDifference(int boxPositionIndex)
+    {
+        return LeadPosition - BoxPositions[boxPositionIndex];
+    }
+    public Vector2 PositionalDifference(Vector2 pos)
+    {
+        return LeadPosition - pos;
+    }
 }

@@ -19,6 +19,7 @@ public class RepairPiece : MonoBehaviour
     [SerializeField] protected DragStates _dragState;
 
     public SO_PiecePattern PiecePattern;
+    public Transform LeadingBox;
 
     private Vector3 _initialPos;
 
@@ -44,6 +45,11 @@ public class RepairPiece : MonoBehaviour
             y *= (float)boxPixelSize / pixelUnit;
             box.transform.SetParent(transform);
             box.transform.localPosition = new Vector3(x, y, 0f);
+
+            if(PiecePattern.LeadPosition == pos)
+            {
+                LeadingBox = box.transform;
+            }
         }
 
         _dragState = DragStates.NotDragging;

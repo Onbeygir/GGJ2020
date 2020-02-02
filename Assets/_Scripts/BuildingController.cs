@@ -56,8 +56,7 @@ public class BuildingController : MonoBehaviour
     {
         string[] lines = BuildingData.Split(new string[] { "\n", System.Environment.NewLine }, System.StringSplitOptions.None);
         float mid = lines[0].Length / 2f;
-        Debug.Log(mid);
-
+        
 
         float distanceBetween = (float)BoxPixelWidth / PixelUnit;
         _grid = new GridSlot[lines.Length][];
@@ -71,26 +70,27 @@ public class BuildingController : MonoBehaviour
         {
             for (int i = 0; i < lines[j].Length; i++)
             {
+                float halfX = (float)lines[j].Length / 2;
                 _grid[j][i] = new GridSlot()
                 {
-                    Pos = new Vector2(GridParent.transform.localPosition.x + i * distanceBetween, GridParent.transform.localPosition.y + j * distanceBetween),
+                    Pos = new Vector2(GridParent.transform.position.x + (i- halfX) * distanceBetween, GridParent.transform.position.y + (j-.5f) * distanceBetween),
                     Value = int.Parse(lines[lines.Length - 1 - j][i].ToString())
                 };
                 GameObject go = new GameObject();
                 go.transform.SetParent(GridParent.transform);
-                go.transform.localPosition = _grid[j][i].Pos;
+                go.transform.position = _grid[j][i].Pos;
                 go.name = _grid[j][i].Value.ToString();
             }
         }
 
-        GridParent.transform.localPosition = Vector3.zero;
+        //GridParent.transform.localPosition = Vector3.zero;
     }
 
     public bool TryPlacingPiece(RepairPiece piece, out Vector2 snapPos)
     {
         //piece.PiecePattern.LeadPosition
         float distance = float.PositiveInfinity;
-        Vector2 piecePos = piece.transform.position;
+        Vector2 piecePos = piece.LeadingBox.position;
         float tempDist;
         int y = 0, x = 0;
         for (int i = 0; i < _grid.Length; i++)
@@ -102,6 +102,7 @@ public class BuildingController : MonoBehaviour
                 tempDist = Vector2.Distance(slot.Pos, piecePos);
                 if(tempDist < distance)
                 {
+                    //Debug.Log(i + "/" + j + " closest distance " + tempDist);
                     distance = tempDist;
                     y = i;
                     x = j;
@@ -109,15 +110,86 @@ public class BuildingController : MonoBehaviour
             }
         }
         GridSlot gs = _grid[y][x];
+        GameObject ng1 = new GameObject();
+        ng1.transform.position = piece.LeadingBox.position;
+        ng1.name = "piece.LeadingBox.position";
+
+        GameObject ng2 = new GameObject();
+        ng2.transform.position = gs.Pos;
+        ng2.name = "gs.Pos";
+
+        bool inSlot = false;
+        
         if (distance < MaxPlacementDistance && gs.Value == 0)
         {
             snapPos = gs.Pos;
-            return true;
+            inSlot = true;
         }
         else
         {
             snapPos = Vector2.zero;
+            inSlot = false;
             return false;
+        }
+        Vector2Int coord = new Vector2Int(y, x);
+        List<Vector2Int> sum = new List<Vector2Int>();
+        //sum my bitch up DUUUUU du du duuu dududu
+        foreach (Vector2 boxPos in piece.PiecePattern.BoxPositions)
+        {
+            Vector2 p = piece.PiecePattern.PositionalDifference(boxPos);
+            p = new Vector2(p.y, p.x);
+            p = coord + p;
+            int value = _grid[(int)p.y][(int)p.x].Value;
+            //Debug.Log(value);
+            if (value > 0)
+            {
+                Debug.Log("OVERLAPPING!");
+                return false;
+            }
+            else
+            {
+                sum.Add(new Vector2Int((int)p.x, (int)p.y));
+            }
+        }
+        bool grounded = false;
+        foreach (var boxPos in piece.PiecePattern.BoxPositions)
+        {
+            Vector2 p = piece.PiecePattern.PositionalDifference(boxPos);
+            p = new Vector2(p.y, p.x);
+            Vector2Int pInt = new Vector2Int((int)p.x, (int)p.y);
+            pInt = coord + pInt;
+            pInt.x += 1;
+            if (_grid[pInt.y][pInt.x].Value > 0)
+                grounded = true;
+        }
+        if (!grounded)
+        {
+            Debug.Log("NOT GROUNDED!");
+            return false;
+        }
+
+        foreach (var item in sum)
+        {
+            _grid[item.x][item.y].Value++;
+        }
+        Debug.Log("yes");
+        return inSlot;
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (_grid == null) return;
+        foreach (var item in _grid)
+        {
+            foreach (var slot in item)
+            {
+                Gizmos.color = Color.yellow;
+                if (slot.Value == 2)
+                    Gizmos.color = Color.blue;
+                if (slot.Value == 1)
+                    Gizmos.color = Color.green;
+                Gizmos.DrawSphere(slot.Pos, .01f);
+            }
         }
     }
 }
