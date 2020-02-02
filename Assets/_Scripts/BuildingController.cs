@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
+using DG.Tweening;
 
 public class BuildingController : MonoBehaviour
 {
@@ -171,6 +173,36 @@ public class BuildingController : MonoBehaviour
         Debug.Log("yes");
         return inSlot;
     }
+
+    public void OnBuildingCompleted(UnityAction animationDone)
+    {
+        BuildingSpriteRenderer.DOColor(Color.white, 1f);
+        var pieces = FindObjectsOfType<RepairPiece>();
+        foreach (var item in pieces)
+        {
+            Destroy(item.gameObject);
+        }
+        StartCoroutine(DelayedCall(1f, () =>
+        {
+
+            BuildingSpriteRenderer.sortingOrder = 100;
+        }));
+
+
+        
+        BuildingSpriteRenderer.DOFade(1f, 1f);
+        BuildingGrid.DOFade(0f, 1f);
+        StartCoroutine(DelayedCall(3f, animationDone));
+
+    }
+
+    public IEnumerator DelayedCall( float delay,UnityAction call)
+    {
+        yield return new WaitForSeconds(delay);
+        call?.Invoke();
+    }
+
+
 
     private void OnDrawGizmos()
     {

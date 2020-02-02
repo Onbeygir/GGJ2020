@@ -35,17 +35,20 @@ public class ClockController : MonoBehaviour
     {
         _currentTime -= Time.deltaTime;
         int currentSecond = Mathf.FloorToInt(_currentTime);
-        if (currentSecond < _prevSecond)
+        if (_currentTime <= 0)
+        {
+            _currentTime = 0;
+            if (currentSecond < 0) currentSecond = 0;
+            ClockText.text = currentSecond.ToString();
+            timeUp?.Invoke();
+            StopClock();            
+        }
+        else if (currentSecond < _prevSecond)
         {
             _prevSecond = currentSecond;
             ClockText.text = currentSecond.ToString();
         }
 
-        if(_currentTime <= 0)
-        {
-            _currentTime = 0;
-            timeUp?.Invoke();
-            StopClock();
-        }
+
     }
 }

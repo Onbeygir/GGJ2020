@@ -9,12 +9,21 @@ public class MenuController : MonoBehaviour
     public GameObject StartPopup;
     public UIValueController Artwork;
     public UIValueController ManPower;
-    public int BuildingIndex;
+    public UILevelSelector BuildingSelector;
     public SO_PlayerData PlayerData;
 
     public void OnGameReadyPressed()
     {
-        PlayerData.Setup(BuildingIndex, Artwork.CurrentValue, ManPower.CurrentValue);
+        if (BuildingSelector.CurrentLevelData == null)
+        {
+            //ignore
+        }
+        else
+        {
+            PlayerData.Setup(BuildingSelector.CurrentLevelData, Artwork.CurrentValue, ManPower.CurrentValue);
+            SceneManager.LoadScene("Boardgame");
+        }
+
         
     }
 
@@ -36,7 +45,7 @@ public class MenuController : MonoBehaviour
     }
     public void OnBoardgamePressed()
     {
-        SceneManager.LoadScene("Boardgame");
+        SceneManager.LoadScene("Setup");
     }
 
     public void OnQuitPressed()

@@ -4,23 +4,59 @@ using UnityEngine;
 
 public class BuildingFactory : MonoBehaviour
 {
-
+    public static BuildingFactory Instance
+    {
+        get
+        {
+            if(_instance == null)
+            {
+                _instance = FindObjectOfType<BuildingFactory>();
+            }
+            return _instance;
+        }
+    }
     public BuildingController[] BuildingPrefabs;
 
     private BuildingController _currentBuilding;
     private int _currentIndex;
+    private static BuildingFactory _instance;
+
+    private bool _startDone = false;
 
     private void Start()
     {
-        _currentBuilding = BuildingController.Instance;
-        for (int i = 0; i < BuildingPrefabs.Length; i++)
+        if (!_startDone)
         {
-            if (BuildingPrefabs[i].Equals(_currentBuilding))
+            _startDone = true;
+            _currentBuilding = BuildingController.Instance;
+            for (int i = 0; i < BuildingPrefabs.Length; i++)
             {
-                _currentIndex = i;
+                if (BuildingPrefabs[i].Equals(_currentBuilding))
+                {
+                    _currentIndex = i;
+                }
             }
         }
+    }
 
+    public void BuildBuilding(GameObject buildingPrefab)
+    {
+        Start();
+        for (int i = 0; i < BuildingPrefabs.Length; i++)
+        {
+            if(buildingPrefab.name == BuildingPrefabs[i].name)
+            {
+                Build(i);
+            }
+        }
+    }
+
+    private void Build(int index)
+    {
+        if(_currentBuilding != null)
+            Destroy(_currentBuilding.gameObject);
+
+        _currentBuilding = Instantiate(BuildingPrefabs[index]);
     }
 
     private void Update()
