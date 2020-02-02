@@ -22,6 +22,7 @@ public class RepairPiece : MonoBehaviour
     public Transform LeadingBox;
 
     private Vector3 _initialPos;
+    private Tweener _goingBack;
 
     public void Setup(GameObject boxPrefab, SO_PiecePattern pattern, bool isArt = false ,int boxPixelSize = 9, int pixelUnit = 100)
     {
@@ -58,7 +59,11 @@ public class RepairPiece : MonoBehaviour
 
     public void OnDragStarted(BaseEventData data)
     {
-        if (_locked) return;
+        if (_goingBack!= null)
+        {
+            _goingBack.Kill(true);
+            _goingBack = null;
+        }
         //Debug.Log("DragStarted");
         _dragState = DragStates.Dragging;
     }
@@ -79,10 +84,12 @@ public class RepairPiece : MonoBehaviour
         else
         {
             //return back
-            _locked = true;
-            var tw = transform.DOMove(_initialPos, 1f);
-            tw.SetEase(Ease.OutBack);
-            tw.onComplete += () => { _locked = false; };
+            if(_goingBack != null)
+            {
+                _goingBack.Kill(true);
+            }
+            _goingBack = transform.DOMove(_initialPos, 1f);
+            _goingBack.SetEase(Ease.OutBack);
         }
     }
     public void OnDragging(BaseEventData data)
