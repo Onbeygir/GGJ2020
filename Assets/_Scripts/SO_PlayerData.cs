@@ -15,4 +15,11 @@ public class SO_PlayerData : ScriptableObject
 
     public bool HasManPower { get { return _currentNumberOfManPower > 0; } }
     public bool HasArtPiece { get { return _currentNumberOfArtPieces > 0; } }
+
+    public void Setup(int buildingID, int no_artPieces, int no_manpower)
+    {
+        BuildingID = buildingID;
+        NumberOfArtPieces = no_artPieces;
+        NumberOfManPower = no_manpower;
+    }
 }
